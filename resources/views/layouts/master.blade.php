@@ -23,7 +23,7 @@
                     <img class="img logo mb-5" src="{{ asset('public/images/logo.png') }}" alt="Logo">
                 </a>
                 <ul class="list-unstyled components mb-5">
-                    <li class="{{ Request::is('dashboard') }}">
+                    <li class="{{ Request::is('dashboard','/index') }}">
                         <a href="#">Dashboard</a>
                     </li>
                     <li class="{{ Request::is('request/index') ? 'active' : '' }}">
@@ -44,14 +44,14 @@
                     </li>
                     @can('administrator')
                         <li
-                            class="{{ Request::is('divisions/index', 'announcement/', 'roles/index', 'permissions/index') ? 'active' : '' }}">
+                            class="{{ Request::is('divisions/index', 'announcement/', 'roles/index', 'permissions/index', 'staffs/index') ? 'active' : '' }}">
                             <a href="#pageSubmenu" data-bs-toggle="collapse" role="button"
                                 aria-expanded="
                             {{ Request::is('divisions/index', 'announcement/', 'roles/index', 'permissions/index') ? 'true' : 'false' }}"
                                 aria-controls="pageSubmenu">System Settings
                                 <i class="fa fa-angle-down float-end mt-2"></i></a>
                             <ul class="collapse list-unstyled 
-                            {{ Request::is('divisions/index', 'announcement/', 'roles/index', 'permissions/index') ? 'show' : '' }}"
+                            {{ Request::is('divisions/index', 'announcement/', 'roles/index', 'permissions/index', 'staffs/index') ? 'show' : '' }}"
                                 id="pageSubmenu">
                                 <li>
                                     <a href="#">Announcement</a>
@@ -60,7 +60,7 @@
                                     <a href="#">System Announcement</a>
                                 </li>
                                 @can('users-read')
-                                    <li class="{{ Request::is('users/index') ? 'active' : '' }}">
+                                    <li class="{{ Request::is('staffs/index') ? 'active' : '' }}">
                                         <a href="{{ route('staffsIndex') }}">Staff</a>
                                     </li>
                                 @endcan

@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",
+        "@vueform/multiselect": "^2.6.11",
         "bootstrap": "^5.3.5",
         "jquery": "^3.7.1",
         "vform": "^2.1.2",
