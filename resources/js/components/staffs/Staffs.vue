@@ -227,12 +227,16 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("getStaffs");
     this.$store.dispatch("getAllDivisions");
     this.$store.dispatch("getAllRoles");
     this.$store.dispatch("getAllPermissions");
     this.$store.dispatch("getAuthRolesAndPermissions");
   },
   computed: {
+    staffs() {
+      return this.$store.getters.staffs;
+    },
     filtered_permissions() {
       return this.$store.getters.filtered_permissions;
     },

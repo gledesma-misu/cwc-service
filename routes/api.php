@@ -22,3 +22,4 @@ Route::get('getAllPermissions', [ApiController::class, 'getAllPermissions'])->mi
 
 
 Route::post('addStaff', [StaffController::class, 'addStaff'])->middleware('auth:api');
+Route::get('getStaffs', [StaffController::class, 'getStaffs'])->middleware('auth:api');

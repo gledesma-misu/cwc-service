@@ -54,4 +54,8 @@ class User extends Authenticatable implements LaratrustUser
             'password' => 'hashed',
         ];
     }
+
+    public function division(){
+        
+    }
 }

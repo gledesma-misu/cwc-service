@@ -13,6 +13,10 @@ class StaffController extends Controller
         return view('management.staffs.index');
     }
 
+    public function getStaffs(){
+        return response()->json(User::where('deleted', 0)->latest()->get());
+    }
+
     public function addStaff(Request $request)
     {
         // return $request->all();
