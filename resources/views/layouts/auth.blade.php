@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container p-4">
+    <div class="container p-2">
         <div class="row justify-content-center">
             <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
                 <div class="mb-5">
@@ -23,13 +23,19 @@
                     </div>
                     <h4 class="text-center mb-4">CWC - Service v1.0.0</h4>
                 </div>
-                
-                    @yield('content')
-                
+                @if (Session::has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ Session::get('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @yield('content')
+
             </div>
         </div>
     </div>
     </div>
+
 </body>
 
 </html>

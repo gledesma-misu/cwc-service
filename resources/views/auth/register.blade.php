@@ -3,7 +3,7 @@
 @section('content')
     <div class="card border border-light-subtle rounded-4">
         <div class="card-header bg-secondary">
-            <h5 class="text-center text-light">REGISTER</h5>
+            <h3 class="text-center text-light">REGISTER</h3>
         </div>
         <div class="card-body p-3 p-md-4 ">
             <form action="{{ route('register') }}" method="POST">
@@ -105,8 +105,14 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="password_confirmation"
-                                id="password_confirmation" placeholder="Confirm Password" autocomplete="new-password">
+                            <input type="password" name="password_confirmation" class="form-control"
+                                autocomplete="new-password" placeholder="Confirm your password" required>
+
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                             <label for="password_confirmation" class="form-label">Confirm Password</label>
                         </div>
                     </div>

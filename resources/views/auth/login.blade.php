@@ -3,7 +3,7 @@
 @section('content')
     <div class="card border border-light-subtle rounded-4">
         <div class="card-header bg-secondary">
-            <h5 class="text-center text-light">LOGIN</h5>
+            <h3 class="text-center text-light">LOGIN</h3>
         </div>
         <div class="card-body p-3 p-md-4 ">
             <form action="{{ route('login') }}" method="POST">
@@ -11,11 +11,11 @@
                 <div class="row gy-3 overflow-hidden">
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text"
+                            <input required type="text"
                                 class="form-control @error('username')
                             is-invalid
                         @enderror"
-                                name="username" id="username" placeholder="Username" value={{ old('username') }}>
+                                name="username" id="username" placeholder="Username" value={{ old('username') }} >
                             @error('username')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -30,7 +30,7 @@
                                 class="form-control @error('password')
                             is-invalid
                             @enderror"
-                                name="password" id="password" placeholder="Password" autocomplete="new-password">
+                                name="password" id="password" placeholder="Password" autocomplete="new-password" required>
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -56,7 +56,7 @@
                 </div>
             </form>
             <div class="d-flex gap-2 gap-md-4 mt-2 flex-md-row justify-content-md-center">
-                <a href="{{ route('register') }}">Create new account</a>
+                <a href="{{ route('register') }}">Register</a>
                 <a href="#!" class="link-secondary text-decoration-none">Forgot password</a>
             </div>
         </div>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d999e959f29684ae2a40ed022ab5fd46",
+    "content-hash": "61e20fd64a855832aea599ecd9bffe61",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4426,16 +4426,16 @@
         },
         {
             "name": "santigarcor/laratrust",
-            "version": "8.4.1",
+            "version": "8.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/santigarcor/laratrust.git",
-                "reference": "f0b90fca6b378906c3522f9f40ca1691c4a6fd84"
+                "reference": "33229272952f2cb61593b67a68aff43c99a0e4f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/f0b90fca6b378906c3522f9f40ca1691c4a6fd84",
-                "reference": "f0b90fca6b378906c3522f9f40ca1691c4a6fd84",
+                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/33229272952f2cb61593b67a68aff43c99a0e4f0",
+                "reference": "33229272952f2cb61593b67a68aff43c99a0e4f0",
                 "shasum": ""
             },
             "require": {
@@ -4489,7 +4489,7 @@
             ],
             "support": {
                 "issues": "https://github.com/santigarcor/laratrust/issues",
-                "source": "https://github.com/santigarcor/laratrust/tree/8.4.1"
+                "source": "https://github.com/santigarcor/laratrust/tree/8.5.0"
             },
             "funding": [
                 {
@@ -4497,7 +4497,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-31T14:02:58+00:00"
+            "time": "2025-06-02T14:29:05+00:00"
         },
         {
             "name": "symfony/clock",

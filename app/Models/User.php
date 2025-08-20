@@ -25,11 +25,13 @@ class User extends Authenticatable implements LaratrustUser
         'fname',
         'mname',
         'lname',
+        'emp_id',
         'username',
         'email',
         'password',
         'password_text',
         'division_id',
+        'deleted'
     ];
 
     /**
@@ -56,6 +58,10 @@ class User extends Authenticatable implements LaratrustUser
     }
 
     public function division(){
-        
+        return $this->belongsTo('App\Models\Division');
+    }
+
+    public function tassistance(){
+        return $this->hasMany(TAssistance::class);
     }
 }

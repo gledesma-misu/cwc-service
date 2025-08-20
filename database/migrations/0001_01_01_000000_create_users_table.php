@@ -16,11 +16,14 @@ return new class extends Migration
             $table->string('fname');
             $table->string('mname');
             $table->string('lname');
+            $table->integer('deleted')->default('0');
+            $table->integer('emp_id')->default('0');
             $table->string('username');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->integer('activated')->default('0');
             $table->string('password');
-            $table->string('password_text');
+            $table->string('password_text')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

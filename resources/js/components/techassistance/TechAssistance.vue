@@ -1,14 +1,15 @@
 <template>
+    <h1>Technical Assistance</h1>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-dark">
-                    <h5 class="float-start text-light">Division List</h5>
-                    <button class="btn btn-success float-end" @click="createDivision"
-                        v-if="current_permissions.has('divisions-create')">New Division/Unit</button>
+                    <h5 class="float-start text-light">Requests List</h5>
+                    <button class="btn btn-success float-end" @click="submitRequest"
+                        v-if="current_permissions.has('technicalassistance-create')">Request</button>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="search_type">Search Type</label>
@@ -25,21 +26,33 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> -->
+                    <ul class="nav nav-underline">
+                        <li class="nav-item">
+                            <a
+                                :class="`nav-link ${windowpath == '/cwc-service/techassistance/index' ? 'active' : ''}`">Pending</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Accomplished</a>
+                        </li>
+                    </ul>
                     <div class="table-responsive">
                         <table class="table table-hover text-center">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name </th>
+                                    <th>Request </th>
+                                    <th>Request By</th>
+                                    <th>Request Type</th>
+                                    <th>Status</th>
                                     <th
-                                        v-if="current_permissions.has('divisions-update') || current_permissions.has('divisions-delete')">
+                                        v-if="current_permissions.has('technicalassistance-update') || current_permissions.has('technicalassistance-delete')">
                                         Actions </th>
                                 </tr>
 
                             </thead>
                             <tbody>
-                                <tr v-for="(division, index) in divisions.data" :key="index">
+                                <!-- <tr v-for="(division, index) in divisions.data" :key="index">
                                     <td>{{ index + 1 }}</td>
                                     <td>{{ division.name }}</td>
                                     <td
@@ -48,13 +61,13 @@
                                                 class="fa fa-edit"></i></button>
                                         <button class="btn btn-danger" @click="deleteDivision(division)">Delete</button>
                                     </td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>
 
                     <!-- pagination -->
-                    <div class="d-flex justify-content-center" v-if="divisionLinks.length > 3">
+                    <!-- <div class="d-flex justify-content-center" v-if="divisionLinks.length > 3">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
                                 <li :class="`page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''
@@ -64,7 +77,7 @@
                                 </li>
                             </ul>
                         </nav>
-                    </div>
+                    </div> -->
                     <!-- end pagination -->
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -73,7 +86,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">
-                                        {{ !editMode ? 'Add Division' : 'Edit Division' }}
+                                        Request Technical Assistance
                                     </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
@@ -82,25 +95,40 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="name">Name</label>
-                                                <input type="text" class="form-control" name="name"
-                                                    v-model="divisionData.name">
-                                                <!-- <p class="text-danger" v-if="divisionErrors.name">
-                                                    Name Required
-                                                </p> -->
-                                                <div class="text-danger" v-if="divisionData.errors.has('name')"
-                                                    v-html="divisionData.errors.get('name')" />
+                                                <label for="request_by">Request By</label>
+                                                <input type="text" class="form-control" name="request_by">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="request_type">Request Type</label>
+                                                <select name="request_type" class="form-control">
+                                                    <option value="0">Select Type</option>
+                                                    <option value="1">Hardware</option>
+                                                    <option value="2">Software</option>
+                                                    <option value="3">Assigned To</option>
+                                                </select>
+                                                <!-- <input type="text" class="form-control" name="request_type"> -->
                                             </div>
                                         </div>
 
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <input type="text" class="form-control" name="description">
+                                                <div class="text-danger" v-if="requestData.errors.has('email')"
+                                                    v-html="requestData.errors.get('description ')"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-success"
-                                        @click="!editMode ? addDivision() : updateDivision()">
-                                        {{ !editMode ? 'Add' : 'Save Changes' }}</button>
+                                    <button type="button" class="btn btn-success" @click="addRequest()">
+                                        Add</button>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +138,6 @@
         </div>
     </div>
 
-
 </template>
 
 <script>
@@ -119,21 +146,23 @@ import Form from 'vform'
 export default {
     data() {
         return {
-            editMode: false,
-            divisionData: new Form({
-                id: '',
-                name: ''
+            windowpath: window.path,
+            requestData: new Form({
+                request_by: "",
+                request_type: "",
+                description: ""
             }),
-            divisionErrors: {
-                name: false
-            },
-            searchData: {
-                search_type: 'name',
-                search_value: '',
-            }
         }
     },
+
     methods: {
+        submitRequest() {
+            try {
+                $("#exampleModal").modal("show");
+            } catch (error) {
+                console.log(error);
+            }
+        },
         searchDivision() {
             this.$store.dispatch('searchDivision', this.searchData)
         },
@@ -144,57 +173,12 @@ export default {
                 this.$store.dispatch("getDivisionsResults", link);
             }
         },
-        createDivision() {
-            this.editMode = false;
-            this.divisionData.name = '';
-            try {
-                $('#exampleModal').modal('show');
-            } catch (error) {
-                console.log(error);
-            }
-
-        },
-        addDivision() {
-            // this.divisionData.name == '' ? this.divisionErrors.name = true : this.divisionErrors.name = false
-
-            // if (this.divisionData.name) {
-            this.$store.dispatch('addDivision', this.divisionData);
-            // }
-
-        },
-        editDivision(division) {
-            this.editMode = true;
-            this.divisionData.id = division.id;
-            this.divisionData.name = division.name;
-
-            $('#exampleModal').modal('show');
-        },
-        updateDivision() {
-            // this.divisionData.name == '' ? this.divisionErrors.name = true : this.divisionErrors.name = false
-            // if (this.divisionData.name) {
-            this.$store.dispatch('updateDivision', this.divisionData);
-
-            // }
-        },
-        deleteDivision(division) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.$store.dispatch('deleteDivision', division);
-                }
-            });
-        }
 
     },
     mounted() {
         this.$store.dispatch('getDivisions');
+        this.$store.dispatch("getAllRoles");
+        this.$store.dispatch("getAllPermissions");
         this.$store.dispatch('getAuthRolesAndPermissions');
     },
     computed: {

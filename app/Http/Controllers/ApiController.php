@@ -11,11 +11,11 @@ class ApiController extends Controller
     //
     public function getAllDivisions()
     {
-        return response()->json(Division::where('deleted', 0)->get());
+        return response()->json(Division::get());
     }
     public function getAllRoles()
     {
-        return response()->json(Role::where('deleted', 0)->get());
+        return response()->json(Role::get());
     }
     public function getAllPermissions()
     {

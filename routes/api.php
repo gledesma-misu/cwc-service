@@ -3,6 +3,7 @@
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\StaffController;
+use App\Http\Middleware\ForceToJson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,15 +12,28 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('storeDivision', [DivisionController::class, 'storeDivision'])->middleware('auth:api');
-Route::post('updateDivision/{id}', [DivisionController::class, 'updateDivision'])->middleware('auth:api');
-Route::post('deleteDivision/{id}', [DivisionController::class, 'deleteDivision'])->middleware('auth:api');
-Route::get('getDivisions', [DivisionController::class, 'getDivisions'])->middleware('auth:api');
 
-Route::get('getAllDivisions', [ApiController::class, 'getAllDivisions'])->middleware('auth:api');
-Route::get('getAllRoles', [ApiController::class, 'getAllRoles'])->middleware('auth:api');
-Route::get('getAllPermissions', [ApiController::class, 'getAllPermissions'])->middleware('auth:api');
+Route::middleware(['forcetojson', 'auth:api'])->group(function () {
 
+    Route::controller(DivisionController::class)->group(function () {
+        Route::get('searchDivision', 'searchDivision')->middleware('permission:divisions-read');
+        Route::post('storeDivision', 'storeDivision')->middleware('permission:divisions-create');
+        Route::post('updateDivision/{id}', 'updateDivision')->middleware('permission:divisions-update');
+        Route::post('deleteDivision/{id}', 'deleteDivision')->middleware('permission:divisions-delete');
+        Route::get('getDivisions', 'getDivisions')->middleware('permission:divisions-read');
+    });
 
-Route::post('addStaff', [StaffController::class, 'addStaff'])->middleware('auth:api');
-Route::get('getStaffs', [StaffController::class, 'getStaffs'])->middleware('auth:api');
+    Route::controller(ApiController::class)->group(function () {
+        Route::get('getAllDivisions', 'getAllDivisions')->middleware('permission:divisions-read');
+        Route::get('getAllRoles', 'getAllRoles')->middleware('permission:roles-read');
+        Route::get('getAllPermissions', 'getAllPermissions')->middleware('permission:permissions-read');
+    });
+
+    Route::controller(StaffController::class)->group(function () {
+        Route::get('searchUser', 'searchUser')->middleware('permission:users-read');
+        Route::post('addStaff', 'addStaff')->middleware('permission:users-read');
+        Route::post('updateStaff/{id}', 'updateStaff')->middleware('permission:users-read');
+        Route::post('deleteStaff/{id}', 'deleteStaff')->middleware('permission:users-read');
+        Route::get('getStaffs', 'getStaffs')->middleware('permission:users-read');
+    });
+});
