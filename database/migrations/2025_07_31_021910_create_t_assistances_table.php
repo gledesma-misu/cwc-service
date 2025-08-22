@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('division_id');
             $table->integer('request_by');
-            $table->varchar('request_type');
+            $table->string('request_type');
             $table->text('description');
             $table->text('request_date');
             $table->text('file_attachement')->nullable();

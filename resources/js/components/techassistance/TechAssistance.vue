@@ -96,7 +96,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="request_by">Request By</label>
-                                                <input type="text" class="form-control" name="request_by">
+                                                <input type="text" class="form-control" name="request_by" :value="`${logged_user}`" v-bind:disabled="current_roles.has('employee')">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -106,7 +106,6 @@
                                                     <option value="0">Select Type</option>
                                                     <option value="1">Hardware</option>
                                                     <option value="2">Software</option>
-                                                    <option value="3">Assigned To</option>
                                                 </select>
                                                 <!-- <input type="text" class="form-control" name="request_type"> -->
                                             </div>
@@ -146,6 +145,7 @@ import Form from 'vform'
 export default {
     data() {
         return {
+            logged_user: window.auth_user,
             windowpath: window.path,
             requestData: new Form({
                 request_by: "",

@@ -33,10 +33,11 @@
                     @endcan
                     @can('administrator')
                         <li class="{{ Request::is('techassistance/index', 'techassistance/report') ? 'active' : '' }}">
-                            <a href="#homeSubmenu" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            <a href="#homeSubmenu" data-bs-toggle="collapse" role="button" aria-expanded=" {{ Request::is('techassistance/index', 'techassistance/report') ? 'true' : 'false' }}"
                                 aria-controls="homeSubmenu">Technical Assistance
                                 <i class="fa fa-angle-down float-end mt-2"></i></a>
-                            <ul class="collapse list-unstyled" id="homeSubmenu">
+                            <ul class="collapse list-unstyled
+                            {{ Request::is('techassistance/index', 'techassistance/report') ? 'show' : '' }}" id="homeSubmenu">
                                 <li class="{{ Request::is('techassistance/index') ? 'active' : '' }}">
                                     <a href="{{ route('techAssistanceIndex') }}">New Request</a>
                                 </li>
