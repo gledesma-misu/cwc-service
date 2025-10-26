@@ -3,6 +3,7 @@
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\TAssistanceController;
 use App\Http\Middleware\ForceToJson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,10 @@ Route::middleware(['forcetojson', 'auth:api'])->group(function () {
     });
 
     Route::controller(ApiController::class)->group(function () {
+        Route::get('getUnreadNotifications', 'getUnreadNotifications');
+        Route::get('getAllNotifications', 'getAllNotifications');
+        Route::get('markNotificationAsRead', 'markNotificationAsRead');
+        Route::get('clearAllNotifications', 'clearAllNotifications');
         Route::get('getAllDivisions', 'getAllDivisions')->middleware('permission:divisions-read');
         Route::get('getAllRoles', 'getAllRoles')->middleware('permission:roles-read');
         Route::get('getAllPermissions', 'getAllPermissions')->middleware('permission:permissions-read');
@@ -35,5 +40,16 @@ Route::middleware(['forcetojson', 'auth:api'])->group(function () {
         Route::post('updateStaff/{id}', 'updateStaff')->middleware('permission:users-read');
         Route::post('deleteStaff/{id}', 'deleteStaff')->middleware('permission:users-read');
         Route::get('getStaffs', 'getStaffs')->middleware('permission:users-read');
+    });
+
+    Route::controller(TAssistanceController::class)->group(function () {
+        Route::post('addRequest', 'addRequest')->middleware('permission:technicalassistance-create');
+        Route::post('takeAction', 'takeAction')->middleware('permission:technicalassistance-misu');
+        Route::post('completeRequest', 'completeRequest')->middleware('permission:technicalassistance-update');
+        Route::post('disregardTask/{id}', 'disregardTask')->middleware('permission:technicalassistance-delete');
+        Route::get('getPendingRequests', 'getPendingRequests')->middleware('permission:technicalassistance-read');
+        Route::get('getAccomplishedRequests', 'getAccomplishedRequests')->middleware('permission:technicalassistance-read');
+        Route::get('getTechResponse/{id}', 'getTechResponse')->middleware('permission:technicalassistance-read');
+        Route::get('techassistance/list', 'index')->middleware('permission:technicalassistance-read');
     });
 });

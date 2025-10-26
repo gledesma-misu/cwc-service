@@ -62,6 +62,6 @@ class User extends Authenticatable implements LaratrustUser
     }
 
     public function tassistance(){
-        return $this->hasMany(TAssistance::class);
+        return $this->hasMany('App\Models\TAssistance','request_by');
     }
 }

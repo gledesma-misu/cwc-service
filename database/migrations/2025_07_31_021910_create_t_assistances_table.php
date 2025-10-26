@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ta_requests', function (Blueprint $table) {
+        Schema::create('t_assistances', function (Blueprint $table) {
             $table->id();
             $table->integer('request_id');
-            $table->integer('user_id');
-            $table->integer('division_id');
             $table->integer('request_by');
+            $table->integer('division_id');
             $table->string('request_type');
             $table->text('description');
             $table->text('request_date');
             $table->text('file_attachement')->nullable();
             $table->integer('status')->default('0');
+            $table->integer('performance_survey')->default('0');
             $table->timestamps();
         });
     }

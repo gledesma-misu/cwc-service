@@ -3,6 +3,7 @@
 
 @section('content')
 
-<TechAssistance />
-
+<TechAssistance/>
+ 
 @endsection
+ 

@@ -34,13 +34,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('staffs/index', [StaffController::class, 'index'])->name('staffsIndex')->middleware('permission:users-read');
-    
-    Route::controller(ProfileController::class)->group(function(){
+
+    Route::controller(ProfileController::class)->group(function () {
         Route::get('profile/index', 'index')->name('profileIndex')->middleware('permission:profile-read');
         Route::post('profile/update/{id}', 'update')->name('profileUpdate')->middleware('permission:profile-update');
         Route::post('profile/password/update/{id}', 'passwordUpdate')->name('profilePasswordUpdate')->middleware('permission:profile-password-update');
     });
-    
+
     Route::controller(RoleController::class)->group(function () {
         Route::get('roles/index', 'index')->name('rolesIndex')->middleware('permission:roles-read');
         Route::get('roles/create', 'create')->name('rolesCreate')->middleware('permission:roles-create');
@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('roles/edit/{id}', 'edit')->name('rolesEdit')->middleware('permission:roles-update');
         Route::post('roles/update/{id}', 'update')->name('rolesUpdate')->middleware('permission:roles-update');
         Route::post('roles/delete/{id}', 'delete')->name('rolesDelete')->middleware('permission:roles-delete');
-        Route::post('roles/search','search')->name('rolesSearch')->middleware('permission:roles-read');
+        Route::post('roles/search', 'search')->name('rolesSearch')->middleware('permission:roles-read');
     });
 
     Route::controller(PermissionController::class)->group(function () {
@@ -62,8 +62,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::controller(TAssistanceController::class)->group(function () {
-        Route::get('techassistance/index', 'techAssistanceIndex')->name('techAssistanceIndex')->middleware('permission:technicalassistance-read');
-        Route::get('techassistance/list', 'index')->name('techAssistanceList')->middleware('permission:technicalassistance-read');
+        Route::get('techassistance/index', 'index')->name('techAssistanceIndex')->middleware('permission:technicalassistance-read');
         Route::get('techassistance/report', 'index')->name('techAssistanceReport')->middleware('permission:technicalassistance-read');
     });
 });

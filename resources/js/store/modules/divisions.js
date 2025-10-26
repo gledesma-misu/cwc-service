@@ -12,6 +12,11 @@ export default {
         divisionLinks(state) {
             return state.divisionLinks;
         },
+        // getDivisionName: (state) => (id) => {
+        //     if (!state.divisions.data) return 'N/A';
+        //     const division = state.divisions.data.find(d => d.id === id);
+        //     return division ? division.name : 'N/A';
+        // },
     },
     mutations: {
         set_divisions: (state, data) => {
@@ -53,7 +58,6 @@ export default {
             axios.get(link.url).then((response) => {
                 // console.log(response.data);
                 context.commit("set_divisions", response.data);
-                // console.log(response.data);
             });
         },
         getDivisions: (context) => {

@@ -2,13 +2,15 @@ import { createStore } from 'vuex';
 import apidataModule from './modules/apidata';
 import divisionsModule from './modules/divisions';
 import staffsModule from './modules/staffs';
+import TAssistanceModule from './modules/techrequest';
 
 export const store = createStore({
     strict: true,
     modules: {
         divisionsModule,
         apidataModule,
-        staffsModule
+        staffsModule,
+        TAssistanceModule
     },
     state: {
         current_roles: new Set(),

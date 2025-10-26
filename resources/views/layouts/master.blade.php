@@ -20,7 +20,7 @@
         <nav id="sidebar">
             <div class="p-4 pt-5">
                 <a href="#">
-                    <img class="img logo mb-5" src="{{ asset('public/images/logo.png') }}" alt="Logo">
+                    <img class="img logo mb-5" src="{{ asset('public/images/login_logo.png') }}" alt="Logo">
                 </a>
                 <ul class="list-unstyled components mb-5">
                     <li class="{{ Request::is('dashboard', '/index') }}">
@@ -30,8 +30,8 @@
                         <li class="{{ Request::is('techassistance/index') ? 'active' : '' }}">
                             <a href="{{ route('techAssistanceIndex') }}">Technical Assistance</a>
                         </li>
-                    @endcan
-                    @can('administrator')
+                    @endcanany
+                    @canany(['administrator','misu'])
                         <li class="{{ Request::is('techassistance/index', 'techassistance/report') ? 'active' : '' }}">
                             <a href="#homeSubmenu" data-bs-toggle="collapse" role="button" aria-expanded=" {{ Request::is('techassistance/index', 'techassistance/report') ? 'true' : 'false' }}"
                                 aria-controls="homeSubmenu">Technical Assistance
@@ -39,7 +39,7 @@
                             <ul class="collapse list-unstyled
                             {{ Request::is('techassistance/index', 'techassistance/report') ? 'show' : '' }}" id="homeSubmenu">
                                 <li class="{{ Request::is('techassistance/index') ? 'active' : '' }}">
-                                    <a href="{{ route('techAssistanceIndex') }}">New Request</a>
+                                    <a href="{{ route('techAssistanceIndex') }}">Request List</a>
                                 </li>
                                 {{-- <li class="{{ Request::is('techassistance/list') ? 'active' : '' }}">
                                 <a href="{{ route('techAssistanceList') }}">Request List</a>
@@ -49,7 +49,7 @@
                                 </li>
                             </ul>
                         </li>
-                    @endcan
+                    @endcanany
                     @can('administrator')
                         <li
                             class="{{ Request::is('divisions/index', 'announcement/', 'roles/index', 'permissions/index', 'staffs/index') ? 'active' : '' }}">
@@ -115,6 +115,13 @@
                         <i class="fa fa-bars"></i>
                         <span class="sr-only">Toggle Menu</span>
                     </button>
+
+                    <span class="ml-3">
+                        Account: {{Auth::user()->fname . ' ' . Auth::user()->lname}}
+                    </span>
+
+                    <notifications-component></notifications-component>
+
                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" id="navbarCollapse">
                         <i class="fa fa-bars"></i>
                     </button>
