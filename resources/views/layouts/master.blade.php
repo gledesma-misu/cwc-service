@@ -9,18 +9,20 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    {{-- <link rel="stylesheet" href="{{ asset('public/build/assets/app-WR_sbLG9.css') }}"> --}}
-    <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/sidebar/css/style.css') }}">
+
+
+   
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('sidebar/css/style.css') }}">
 
 </head>
 
 <body>
     <div class="wrapper d-flex align-items-stretch" id="app">
-        <nav id="sidebar">
+        <nav id="sidebar" class="sidebar">
             <div class="p-4 pt-5">
                 <a href="#">
-                    <img class="img logo mb-5" src="{{ asset('public/images/login_logo.png') }}" alt="Logo">
+                    <img class="img logo mb-5" src="{{ asset('images/login_logo.png') }}" alt="Logo">
                 </a>
                 <ul class="list-unstyled components mb-5">
                     <li class="{{ Request::is('dashboard', '/index') }}">
@@ -31,13 +33,15 @@
                             <a href="{{ route('techAssistanceIndex') }}">Technical Assistance</a>
                         </li>
                     @endcanany
-                    @canany(['administrator','misu'])
+                    @canany(['administrator', 'misu'])
                         <li class="{{ Request::is('techassistance/index', 'techassistance/report') ? 'active' : '' }}">
-                            <a href="#homeSubmenu" data-bs-toggle="collapse" role="button" aria-expanded=" {{ Request::is('techassistance/index', 'techassistance/report') ? 'true' : 'false' }}"
+                            <a href="#homeSubmenu" data-bs-toggle="collapse" role="button"
+                                aria-expanded=" {{ Request::is('techassistance/index', 'techassistance/report') ? 'true' : 'false' }}"
                                 aria-controls="homeSubmenu">Technical Assistance
                                 <i class="fa fa-angle-down float-end mt-2"></i></a>
                             <ul class="collapse list-unstyled
-                            {{ Request::is('techassistance/index', 'techassistance/report') ? 'show' : '' }}" id="homeSubmenu">
+                            {{ Request::is('techassistance/index', 'techassistance/report') ? 'show' : '' }}"
+                                id="homeSubmenu">
                                 <li class="{{ Request::is('techassistance/index') ? 'active' : '' }}">
                                     <a href="{{ route('techAssistanceIndex') }}">Request List</a>
                                 </li>
@@ -117,7 +121,7 @@
                     </button>
 
                     <span class="ml-3">
-                        Account: {{Auth::user()->fname . ' ' . Auth::user()->lname}}
+                        Account: {{ Auth::user()->fname . ' ' . Auth::user()->lname }}
                     </span>
 
                     <notifications-component></notifications-component>
@@ -169,9 +173,6 @@
 
     </div>
 
-    {{-- <script src="{{ asset('public/sidebar/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('public/sidebar/js/popper.js') }}"></script> --}}
-    {{-- <script src="{{ asset('public/sidebar/js/bootstrap.min.js') }}"></script> --}}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -199,8 +200,9 @@
         </script>
     @endauth
 
-    <script src="{{ asset('public/js/app.js') }}"></script>
-    <script src="{{ asset('public/sidebar/js/main.js') }}"></script>
+    {{-- <script src="{{ asset('/js/app.js') }}"></script> --}}
+    {{-- <script src="{{ asset('/sidebar/js/main.js') }}"></script> --}}
+  
 </body>
 
 </html>

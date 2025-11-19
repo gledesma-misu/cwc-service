@@ -1,45 +1,43 @@
+// resources/js/bootstrap.js
+
+import $ from "jquery";
+import * as bootstrap from "bootstrap";
+import "@popperjs/core";
 import axios from "axios";
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
 
 
+// ✅ Make jQuery global before anything else
+window.$ = window.jQuery = $;
 
-try {
-    window.Popper = require("@popperjs/core");
-    window.$ = window.jQuery = require("jquery");
-    require("bootstrap");
-} catch (error) {
-    console.log(error);
-}
+// ✅ Make bootstrap available globally if needed
+window.bootstrap = bootstrap;
 
+// ✅ Axios setup
 window.axios = axios;
-
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
+// ✅ Token function (optional)
 function loggedIn() {
     if (window.token) {
-        let successToken = window.token;
-        axios.defaults.headers.common = {
-            Authorization: `Bearer ${successToken}`,
-        };
+        const successToken = window.token;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${successToken}`;
         return successToken;
     }
-    return;
 }
 loggedIn();
-import Echo from 'laravel-echo';
 
-import Pusher from 'pusher-js';
+
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    // encrypted: true,
-    forceTLS: true,
+    broadcaster: "reverb",
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
+    wssPort: import.meta.env.VITE_REVERB_PORT,
+    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
 });
-
-

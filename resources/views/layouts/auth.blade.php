@@ -7,7 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>CWC - Service</title>
-    <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('public/css/app.css') }}"> --}}
+    @vite(['public/css/app.css'])
+
 </head>
 
 <body>
@@ -17,7 +19,7 @@
                 <div class="mb-5">
                     <div class="text-center mb-4">
                         <a href="#!">
-                            <img src="{{ asset('public/images/login_logo.png') }}"
+                            <img src="{{ asset('images/login_logo.png') }}"
                                 alt="Council for the Welfare of Children" height="140">
                         </a>
                     </div>

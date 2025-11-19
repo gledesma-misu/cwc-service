@@ -60,7 +60,7 @@ export default {
             staffData.post(`${window.url}api/addStaff`).then((response) => {
                 // this.getDivisions();
                 console.log(response.data);
-                $("#exampleModal").modal("hide");
+                // $("#exampleModal").modal("hide");
                 
                 window.Toast.fire({
                     icon: "success",
@@ -75,7 +75,7 @@ export default {
                 .then((response) => {
                     context.dispatch("getStaffs");
 
-                    $("#exampleModal").modal("hide");
+                    // $("#exampleModal").modal("hide");
                     window.Toast.fire({
                         icon: "success",
                         title: "User updated successfully!",

@@ -1,7 +1,10 @@
 import axios from "axios";
-
+import { Modal } from "bootstrap";
 export default {
+
+
     state: {
+        exampleModal: null,
         tech_responses: [],
         pending_requests: [],
         pending_requests_links: [],
@@ -111,7 +114,7 @@ export default {
                     requestData.config
                 )
                 .then((response) => {
-                    $("#exampleModal").modal("hide");
+                    // $("#exampleModal").modal("hide");
                     window.Toast.fire({
                         icon: "success",
                         title: "Technical Assistance Requested",
@@ -123,7 +126,7 @@ export default {
             requestData
                 .post(`${window.url}api/takeAction`, requestData)
                 .then((response) => {
-                    $("#exampleModal").modal("hide");
+                    // $("#exampleModal").modal("hide");
                     window.Toast.fire({
                         icon: "success",
                         title: "Requesting was ongoing",
@@ -135,7 +138,7 @@ export default {
             requestData
                 .post(`${window.url}api/completeRequest`, requestData)
                 .then((response) => {
-                    $("#exampleModal").modal("hide");
+                    // $("#exampleModal").modal("hide");
                     window.Toast.fire({
                         icon: "success",
                         title: "Technical Assistance is accomplished",
@@ -146,9 +149,9 @@ export default {
         },
         disregardTask: (context, requestData) => {
             axios
-                .post(`${window.url}api/disregardTask/`+ requestData.id)
+                .post(`${window.url}api/disregardTask/` + requestData.id)
                 .then((response) => {
-                    $("#exampleModal").modal("hide");
+                    // $("#exampleModal").modal("hide");
                     window.Toast.fire({
                         icon: "success",
                         title: "Technical Assistance disregarded",

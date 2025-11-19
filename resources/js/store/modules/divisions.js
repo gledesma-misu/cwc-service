@@ -71,7 +71,7 @@ export default {
                 .then((response) => {
                     // this.getDivisions();
                     context.dispatch("getDivisions");
-                    $("#exampleModal").modal("hide");
+                    // $("#exampleModal").modal("hide");
                     window.Toast.fire({
                         icon: "success",
                         title: "Division Created Successfully",

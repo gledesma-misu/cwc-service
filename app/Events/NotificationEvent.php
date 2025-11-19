@@ -29,10 +29,8 @@ class NotificationEvent implements ShouldBroadcastNow
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return [
-            new Channel('notification'),
-        ];
+        return new Channel('notification');
     }
 }

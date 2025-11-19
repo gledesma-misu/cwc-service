@@ -62,29 +62,33 @@
                     <tr v-if="requestInfo.status == 1">
                         <th style="width: 40%">Performance Survey</th>
                         <td>
-                            <span v-if="requestInfo.performance_survey == 1" class="badge badge-success">Very Dissatisfied</span>
-                            <span v-if="requestInfo.performance_survey == 2"  class="badge badge-success">Dissatisfied</span>
+                            <span v-if="requestInfo.performance_survey == 1" class="badge badge-success">Very
+                                Dissatisfied</span>
+                            <span v-if="requestInfo.performance_survey == 2"
+                                class="badge badge-success">Dissatisfied</span>
                             <span v-if="requestInfo.performance_survey == 3" class="badge badge-success">Neutral</span>
-                            <span v-if="requestInfo.performance_survey == 4" class="badge badge-success">Satisfied</span>
-                            <span v-if="requestInfo.performance_survey == 5" class="badge badge-success">Very Satisfied</span>
+                            <span v-if="requestInfo.performance_survey == 4"
+                                class="badge badge-success">Satisfied</span>
+                            <span v-if="requestInfo.performance_survey == 5" class="badge badge-success">Very
+                                Satisfied</span>
                         </td>
                     </tr>
                     <tr v-if="current_roles.has('employee') && requestInfo.status == 3 || requestInfo.status == 1">
                         <th style="width: 40%">Findings</th>
-                        <td>{{ tech_responses.findings}}</td>
+                        <td>{{ tech_responses.findings }}</td>
                     </tr>
                     <tr v-if="current_roles.has('employee') && requestInfo.status == 3 || requestInfo.status == 1">
                         <th style="width: 40%">Recommendations</th>
-                        <td>{{ tech_responses.recommendations}}</td>
+                        <td>{{ tech_responses.recommendations }}</td>
                     </tr>
                     <tr v-if="current_roles.has('employee') && requestInfo.status == 3 || requestInfo.status == 1">
                         <th style="width: 40%">Remarks</th>
-                        <td>{{ tech_responses.remarks}}</td>
+                        <td>{{ tech_responses.remarks }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div v-if="current_roles.has('employee') && requestInfo.status == 3 ">
+        <div v-if="current_roles.has('employee') && requestInfo.status == 3">
             <div class="row">
                 <label for="findings">Performance Survey</label>
                 <div class="row">
@@ -157,11 +161,12 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success" @click="takeAction(requestInfo)"
+        <button type="button" class="btn btn-success" @click="takeAction(requestInfo)" data-bs-dismiss="modal"
             v-if="current_permissions.has('technicalassistance-misu') && requestInfo.status != 3">
             Take Action</button>
-        <button type="button"  :class="current_permissions.has('technicalassistance-misu') ? 'btn btn-info' : 'btn btn-success'" @click="completeRequest(requestInfo)"
-            v-if="requestInfo.status == 3 && current_roles.has('employee')">
+        <button type="button"
+            :class="current_permissions.has('technicalassistance-misu') ? 'btn btn-info' : 'btn btn-success'"
+            @click="completeRequest(requestInfo)" data-bs-dismiss="modal" v-if="requestInfo.status == 3 && current_roles.has('employee')">
             Mark Complete</button>
     </div>
 

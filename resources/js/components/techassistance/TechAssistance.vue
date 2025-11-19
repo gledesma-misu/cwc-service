@@ -118,8 +118,7 @@
                     </div>
                     <!-- end pagination -->
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="exampleModal" tabindex="-1">
                         <div class="modal-dialog modal-xl modal-dialog-centered">
                             <!-- Take Action -->
                             <div class="modal-content" v-if="showMode">
@@ -198,7 +197,6 @@
                                 </div>
 
                                 <div class="modal-footer">
-
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-success" @click="addRequest()"
@@ -216,6 +214,7 @@
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 import Form from 'vform';
 import TechAction from "./TechAction.vue";
 import { mapGetters } from 'vuex';
@@ -225,6 +224,7 @@ export default {
     },
     data() {
         return {
+            exampleModal: null,
             showMode: false,
             requestInfo: {},
             logged_user: {},
@@ -248,8 +248,9 @@ export default {
         showRequest(request) {
             this.showMode = true;
             this.requestInfo = request;
-
-            $("#exampleModal").modal("show");
+            this.exampleModal = new Modal(document.getElementById("exampleModal"), { keyboard: false });
+            this.exampleModal.show();
+            // $("#exampleModal").modal("show");
         },
         getResults(link) {
             if (!link.url || link.active) {
@@ -270,8 +271,9 @@ export default {
             this.requestDataErrors.reset();
             this.requestDataErrors.clear();
 
-
-            $("#exampleModal").modal("show");
+            this.exampleModal = new Modal(document.getElementById("exampleModal"), { keyboard: false });
+            this.exampleModal.show();
+            // $("#exampleModal").modal("show");
 
         },
         disregardTask(request) {
@@ -299,7 +301,12 @@ export default {
             let config = { headers: { 'content-type': 'multipart/form-data' } };
 
             if (this.requestData.request_type && this.requestData.description) {
-                this.$store.dispatch("addRequest", { requestData: this.requestData, config: config });
+                this.$store.dispatch("addRequest", {
+                    requestData: this.requestData,
+                    config: { headers: { "content-type": "multipart/form-data" } },
+                }).then(() => {
+                    this.exampleModal.hide();
+                });
             }
         },
         searchDivision() {

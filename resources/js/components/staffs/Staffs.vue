@@ -71,8 +71,8 @@
           </div>
           <!-- End Pagination -->
           <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+          <div class="modal fade" id="exampleModal" tabindex="-1" 
+            >
             <div class="modal-dialog modal-lg modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
@@ -188,7 +188,7 @@
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                   </button>
-                  <button type="button" class="btn btn-success" @click="!editMode ? addStaff() : updateStaff()">
+                  <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="!editMode ? addStaff() : updateStaff()">
                     {{ !editMode ? "Add" : "Save Changes" }}
                   </button>
                 </div>
@@ -202,11 +202,13 @@
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 import Form from "vform";
 
 export default {
   data() {
     return {
+      exampleModal: null,
       editMode: false,
       staffData: new Form({
         id: '',
@@ -255,7 +257,9 @@ export default {
       this.staffData.reset();
       this.staffData.name = "";
       try {
-        $("#exampleModal").modal("show");
+        this.exampleModal = new Modal(document.getElementById("exampleModal"), { keyboard: false });
+        this.exampleModal.show();
+        // $("#exampleModal").modal("show");
       } catch (error) {
         console.log(error);
       }
@@ -301,8 +305,9 @@ export default {
             this.staffData.selected_permissions.push(permission.id);
           });
         });
-
-      $("#exampleModal").modal("show");
+      this.exampleModal = new Modal(document.getElementById("exampleModal"), { keyboard: false });
+      this.exampleModal.show();
+      // $("#exampleModal").modal("show");
     },
     updateStaff() {
       // this.divisionData.name == '' ? this.divisionErrors.name = true : this.divisionErrors.name = false

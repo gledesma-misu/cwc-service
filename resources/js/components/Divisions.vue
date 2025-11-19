@@ -99,7 +99,7 @@
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-success"
-                                        @click="!editMode ? addDivision() : updateDivision()">
+                                        @click="!editMode ? addDivision() : updateDivision()" data-bs-dismiss="modal">
                                         {{ !editMode ? 'Add' : 'Save Changes' }}</button>
                                 </div>
                             </div>
@@ -115,10 +115,11 @@
 
 <script>
 import Form from 'vform'
-
+import { Modal } from "bootstrap";
 export default {
     data() {
         return {
+            exampleModal: null,
             editMode: false,
             divisionData: new Form({
                 id: '',
@@ -148,7 +149,9 @@ export default {
             this.editMode = false;
             this.divisionData.name = '';
             try {
-                $('#exampleModal').modal('show');
+                this.exampleModal = new Modal(document.getElementById("exampleModal"), { keyboard: false });
+                this.exampleModal.show();
+                // $('#exampleModal').modal('show');
             } catch (error) {
                 console.log(error);
             }
@@ -167,7 +170,9 @@ export default {
             this.divisionData.id = division.id;
             this.divisionData.name = division.name;
 
-            $('#exampleModal').modal('show');
+            this.exampleModal = new Modal(document.getElementById("exampleModal"), { keyboard: false });
+            this.exampleModal.show();
+            // $('#exampleModal').modal('show');
         },
         updateDivision() {
             // this.divisionData.name == '' ? this.divisionErrors.name = true : this.divisionErrors.name = false

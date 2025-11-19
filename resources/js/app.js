@@ -1,7 +1,13 @@
 import "./bootstrap";
+import "./sidebar/main";
+
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import { createApp } from "vue";
 import { store } from "./store/store";
+// import PrimeVue from "primevue/config";
+// import Aura from "@primeuix/themes/aura";
 
 import LogoutComponent from "./components/auth/LogoutComponent.vue";
 import NotificationsComponent from "./components/NotificationsComponent.vue";
@@ -34,6 +40,7 @@ const Toast = Swal.mixin({
 window.Toast = Toast;
 
 const app = createApp({});
+
 app.component("logout-component", LogoutComponent);
 app.component("notifications-component", NotificationsComponent);
 app.component("divisions", Divisions);
@@ -47,7 +54,16 @@ app.config.globalProperties.$filter = {
         return moment(date).startOf("hour").fromNow();
     },
 };
-window.url = "/cwc-service/";
+window.url = "http://localhost:8000/";
 window.path = window.location.pathname;
 app.use(store);
+
+// app.use(PrimeVue, {
+//     theme: {
+//         preset: Aura,
+//     },
+//     ripple: true,
+// });
+// app.use(PrimeVue, { unstyled: true, ripple: true });
+// app.use(ToastService)
 app.mount("#app");

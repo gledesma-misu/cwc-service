@@ -64,9 +64,14 @@
     </div>
 </template>
 <script>
-import Echo from 'laravel-echo';
 
+import { Modal } from "bootstrap";
 export default {
+    data() {
+        return {
+            exampleModal: null,
+        }
+    },
     computed: {
         unread_notifications() {
             return this.$store.getters.unread_notifications
@@ -76,8 +81,10 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('getUnreadNotifications');
-        this.listenToNotifications()
+        // this.$store.dispatch('getUnreadNotifications');
+        setTimeout(() => {
+            this.listenToNotifications();
+        }, 300);
     },
     methods: {
         markNotificationAsRead(unread) {
@@ -112,7 +119,9 @@ export default {
         },
         getAllNotifications() {
             this.$store.dispatch('getAllNotifications');
-            $('#notificationModal').modal('show')
+            this.notificationModal = new Modal(document.getElementById("notificationModal"), { keyboard: false });
+            this.notificationModal.show();
+            // $('#notificationModal').modal('show')
         },
         listenToNotifications() {
             Echo.channel(`notification`).listen('NotificationEvent', () => {
