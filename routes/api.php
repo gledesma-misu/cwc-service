@@ -25,6 +25,8 @@ Route::middleware(['forcetojson', 'auth:api'])->group(function () {
     });
 
     Route::controller(ApiController::class)->group(function () {
+        Route::get('getBarChartData/{year}', 'getBarChartData');
+        Route::get('getChartData/{year}', 'getChartData');
         Route::get('getUnreadNotifications', 'getUnreadNotifications');
         Route::get('getAllNotifications', 'getAllNotifications');
         Route::get('markNotificationAsRead', 'markNotificationAsRead');
@@ -47,6 +49,7 @@ Route::middleware(['forcetojson', 'auth:api'])->group(function () {
         Route::post('takeAction', 'takeAction')->middleware('permission:technicalassistance-misu');
         Route::post('completeRequest', 'completeRequest')->middleware('permission:technicalassistance-update');
         Route::post('disregardTask/{id}', 'disregardTask')->middleware('permission:technicalassistance-delete');
+        Route::get('countTAPending', 'countTAPending')->middleware('permission:technicalassistance-read');
         Route::get('getPendingRequests', 'getPendingRequests')->middleware('permission:technicalassistance-read');
         Route::get('getAccomplishedRequests', 'getAccomplishedRequests')->middleware('permission:technicalassistance-read');
         Route::get('getTechResponse/{id}', 'getTechResponse')->middleware('permission:technicalassistance-read');

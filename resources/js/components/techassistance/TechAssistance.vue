@@ -324,6 +324,12 @@ export default {
     },
     mounted() {
         this.logged_user = window.auth_user;
+        window.Echo.channel("tarequest").listen("TAssistanceRequest", (e) => {
+            this.$store.dispatch("getPendingRequests");
+        });
+        window.Echo.channel("tarequest").listen("TAssistanceRequest", (e) => {
+            this.$store.dispatch("getAccomplishedRequests");
+        });
         this.$store.dispatch('getPendingRequests');
         this.$store.dispatch('getAccomplishedRequests');
         const current_permissions = this.$store.getters.current_permissions;

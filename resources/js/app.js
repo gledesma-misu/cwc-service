@@ -9,6 +9,9 @@ import { store } from "./store/store";
 // import PrimeVue from "primevue/config";
 // import Aura from "@primeuix/themes/aura";
 
+import DashboardComponent from "./components/DashboardComponent.vue";
+
+
 import LogoutComponent from "./components/auth/LogoutComponent.vue";
 import NotificationsComponent from "./components/NotificationsComponent.vue";
 import Divisions from "./components/Divisions.vue";
@@ -42,6 +45,7 @@ window.Toast = Toast;
 const app = createApp({});
 
 app.component("logout-component", LogoutComponent);
+app.component("dashboard-component", DashboardComponent);
 app.component("notifications-component", NotificationsComponent);
 app.component("divisions", Divisions);
 app.component("staffs", Staffs);
@@ -58,12 +62,5 @@ window.url = "http://localhost:8000/";
 window.path = window.location.pathname;
 app.use(store);
 
-// app.use(PrimeVue, {
-//     theme: {
-//         preset: Aura,
-//     },
-//     ripple: true,
-// });
-// app.use(PrimeVue, { unstyled: true, ripple: true });
-// app.use(ToastService)
+
 app.mount("#app");

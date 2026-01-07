@@ -1,11 +1,10 @@
 import axios from "axios";
 import { Modal } from "bootstrap";
 export default {
-
-
     state: {
         exampleModal: null,
         tech_responses: [],
+        ta_count: 0,
         pending_requests: [],
         pending_requests_links: [],
         accomplished_requests: [],
@@ -14,6 +13,9 @@ export default {
     getters: {
         tech_responses(state) {
             return state.tech_responses;
+        },
+        ta_count(state) {
+            return state.ta_count;
         },
         pending_requests(state) {
             return state.pending_requests;
@@ -32,6 +34,9 @@ export default {
         set_tech_responses: (state, data) => {
             state.tech_responses = data;
             // console.log(state.tech_responses);
+        },
+        set_ta_count: (state, data) => {
+            state.ta_count = data;
         },
         set_accomplished_requests: (state, data) => {
             state.accomplished_requests = data;
@@ -158,6 +163,11 @@ export default {
                     });
                     context.dispatch("getPendingRequests");
                 });
+        },
+        countTAPending: (context) => {
+            axios.get(`${window.url}api/countTAPending`).then((response) => {
+                context.commit("set_ta_count", response.data);
+            });
         },
     },
 };

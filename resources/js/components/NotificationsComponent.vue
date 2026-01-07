@@ -81,10 +81,11 @@ export default {
         }
     },
     mounted() {
-        // this.$store.dispatch('getUnreadNotifications');
-        setTimeout(() => {
-            this.listenToNotifications();
-        }, 300);
+
+        this.$store.dispatch('getUnreadNotifications');
+        window.Echo.channel("notification").listen("NotificationEvent", (e) => {
+            this.$store.dispatch("getUnreadNotifications");
+        });
     },
     methods: {
         markNotificationAsRead(unread) {
@@ -124,10 +125,12 @@ export default {
             // $('#notificationModal').modal('show')
         },
         listenToNotifications() {
-            Echo.channel(`notification`).listen('NotificationEvent', () => {
-                this.$store.dispatch('getUnreadNotifications');
-            })
-        }
+            // console.log('Attempting to subscribe to notification channel...');
+            window.Echo.channel("notification").listen("NotificationEvent", (e) => {
+                console.log("🔥 Custom event name received:", e);
+                this.$store.dispatch("getUnreadNotifications");
+            });
+        },
 
     }
 }

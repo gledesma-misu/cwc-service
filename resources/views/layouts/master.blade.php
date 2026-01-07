@@ -21,12 +21,12 @@
     <div class="wrapper d-flex align-items-stretch" id="app">
         <nav id="sidebar" class="sidebar">
             <div class="p-4 pt-5">
-                <a href="#">
+                <a href="{{ route('dashboard') }}">
                     <img class="img logo mb-5" src="{{ asset('images/login_logo.png') }}" alt="Logo">
                 </a>
                 <ul class="list-unstyled components mb-5">
                     <li class="{{ Request::is('dashboard', '/index') }}">
-                        <a href="#">Dashboard</a>
+                        <a href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
                     @can('employee')
                         <li class="{{ Request::is('techassistance/index') ? 'active' : '' }}">

@@ -11,18 +11,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-// class NotificationEvent implements ShouldBroadcast <------ this should be use for production
-class NotificationEvent implements ShouldBroadcastNow
+class TAssistanceRequest implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $message;
+
     /**
      * Create a new event instance.
      */
     public function __construct()
     {
         //
-        $this->dontBroadcastToCurrentUser();
     }
 
     /**
@@ -32,6 +30,8 @@ class NotificationEvent implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        return [new Channel('notification')];
+        return [
+            new Channel('tarequest'),
+        ];
     }
 }

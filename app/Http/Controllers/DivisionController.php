@@ -25,7 +25,7 @@ class DivisionController extends Controller
     }
     public function getDivisions()
     {
-        return response()->json(Division::latest()->paginate(2));
+        return response()->json(Division::latest()->paginate(10));
     }
     public function storeDivision(Request $request)
     {

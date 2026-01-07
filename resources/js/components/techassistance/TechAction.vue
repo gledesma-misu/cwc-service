@@ -162,11 +162,13 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-success" @click="takeAction(requestInfo)" data-bs-dismiss="modal"
-            v-if="current_permissions.has('technicalassistance-misu') && requestInfo.status != 3">
+            v-if="current_permissions.has('technicalassistance-misu') && requestInfo.status != 3"
+            :disabled="!canSubmit">
             Take Action</button>
         <button type="button"
             :class="current_permissions.has('technicalassistance-misu') ? 'btn btn-info' : 'btn btn-success'"
-            @click="completeRequest(requestInfo)" data-bs-dismiss="modal" v-if="requestInfo.status == 3 && current_roles.has('employee')">
+            @click="completeRequest(requestInfo)" data-bs-dismiss="modal"
+            v-if="requestInfo.status == 3 && current_roles.has('employee')">
             Mark Complete</button>
     </div>
 
@@ -207,6 +209,13 @@ export default {
         this.$store.dispatch('getAuthRolesAndPermissions');
     },
     computed: {
+        canSubmit() {
+            return (
+                this.requestAction.findings.trim() !== '' &&
+                this.requestAction.recommendations.trim() !== '' &&
+                this.requestAction.remarks.trim() !== '' 
+            )
+        },
         accomplished_requests() {
             return this.$store.getters.accomplished_requests;
         },

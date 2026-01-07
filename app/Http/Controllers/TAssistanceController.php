@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DashboardEvent;
 use App\Models\TAssistance;
 use App\Models\TAssistanceResponses;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Session;
 use App\Notifications\NewNotification;
 
 use App\Events\NotificationEvent;
+use App\Events\TAssistanceRequest;
 
 class TAssistanceController extends Controller
 {
@@ -38,7 +40,9 @@ class TAssistanceController extends Controller
                 'status' => 1,
             ]);
         }
+        broadcast(new DashboardEvent());
     }
+
     public function disregardTask($id)
     {
         if (TAssistance::findOrFail($id)) {
@@ -46,7 +50,7 @@ class TAssistanceController extends Controller
                 'status' => 4,
             ]);
         }
-
+        broadcast(new DashboardEvent());
         return response()->json('success');
     }
 
@@ -59,8 +63,7 @@ class TAssistanceController extends Controller
             'remarks' => 'required',
         ]);
         Log::channel('activity')->info('User submitted form', [
-            'ta id' => $request->ta_request_id,
-
+            'ta id' => $request->request_by,
         ]);
 
         $ta_count = TAssistance::count();
@@ -77,13 +80,19 @@ class TAssistanceController extends Controller
                 'status' => 3,
             ]);
         }
-        $message = 'New Technical Assistance Request';
-        $usersInDivision = User::where('division_id', 1)->where('id', '!=', auth('api')->id())->get();
+        $message = 'Action Taken';
 
-        foreach ($usersInDivision as $user) {
-            $user->notify(new NewNotification(auth('api')->user(), $TAssistanceResponses, $message));
-        }
+        $request_by = TAssistance::where('id', $request->ta_request_id)->value('request_by');
+        $requestor = User::where('id', $request_by)->first();
 
+        Log::channel('activity')->info('User submitted form', [
+            'ta id' => $request->request_by,
+        ]);
+
+        $requestor->notify(new NewNotification(auth('api')->user(), $TAssistanceResponses, $message));
+        broadcast(new NotificationEvent())->toOthers();
+        broadcast(new TAssistanceRequest())->toOthers();
+        broadcast(new DashboardEvent());
         Session::flash('success', 'Technical Assistance Updated');
         return response()->json('success');
     }
@@ -159,11 +168,36 @@ class TAssistanceController extends Controller
         foreach ($usersInDivision as $user) {
             $user->notify(new NewNotification(auth('api')->user(), $techassistance, $message));
         }
-        
+
         broadcast(new NotificationEvent())->toOthers();
+        broadcast(new TAssistanceRequest())->toOthers();
+        broadcast(new DashboardEvent());
 
 
         Session::flash('success', 'Technical Assistance requested');
         return response()->json('success');
+    }
+
+    public function countTAPending()
+    {
+
+        $userDiv = auth('api')->user()->division_id;
+
+        if ($userDiv == '1') {
+            return response()->json([
+                'completed' => TAssistance::where('status', '1')->count(),
+                'pending' => TAssistance::where('status', '0')->count(),
+                'ongoing' => TAssistance::where('status', '3')->count(),
+                'disregard' => TAssistance::where('status', '2')->count(),
+            ]);
+        }else{
+           $user_id = auth('api')->user()->id;
+           return response()->json([
+                'completed' => TAssistance::where('request_by', $user_id)->where('status', '1')->count(),
+                'pending' => TAssistance::where('request_by', $user_id)->where('status', '0')->count(),
+                'ongoing' => TAssistance::where('request_by', $user_id)->where('status', '3')->count(),
+                'disregard' => TAssistance::where('request_by', $user_id)->where('status', '4')->count(),
+            ]);
+        }
     }
 }

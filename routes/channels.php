@@ -8,4 +8,12 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 
 Broadcast::channel('notification', function(){
     return true;
-}, ['guards' => ['web', 'api']]);
+});
+
+Broadcast::channel('tarequest', function(){
+    return true;
+});
+
+Broadcast::channel('dashboard', function(){
+    return true;
+});
