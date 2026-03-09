@@ -58,7 +58,7 @@ app.config.globalProperties.$filter = {
         return moment(date).startOf("hour").fromNow();
     },
 };
-window.url = "http://localhost:8000/";
+window.url = "http://127.0.0.1:8000/";
 window.path = window.location.pathname;
 app.use(store);
 

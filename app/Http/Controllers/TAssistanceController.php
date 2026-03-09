@@ -6,7 +6,9 @@ use App\Events\DashboardEvent;
 use App\Models\TAssistance;
 use App\Models\TAssistanceResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Models\Division;
 use Auth;
 use Illuminate\Support\Facades\Log;
 use Session;
@@ -30,9 +32,6 @@ class TAssistanceController extends Controller
             'performance_survey' => 'required',
         ]);
 
-        // Log::channel('activity')->info('User ACcomplished', [
-        //     'Performance Survey' => $request->performance_survey,
-        // ]);
 
         if (TAssistance::findOrFail($request->ta_request_id)) {
             TAssistance::where('id', $request->ta_request_id)->update([
@@ -40,6 +39,7 @@ class TAssistanceController extends Controller
                 'status' => 1,
             ]);
         }
+        broadcast(new TAssistanceRequest())->toOthers();
         broadcast(new DashboardEvent());
     }
 
@@ -85,9 +85,9 @@ class TAssistanceController extends Controller
         $request_by = TAssistance::where('id', $request->ta_request_id)->value('request_by');
         $requestor = User::where('id', $request_by)->first();
 
-        Log::channel('activity')->info('User submitted form', [
-            'ta id' => $request->request_by,
-        ]);
+        // Log::channel('activity')->info('User submitted form', [
+        //     'ta id' => $request->request_by,
+        // ]);
 
         $requestor->notify(new NewNotification(auth('api')->user(), $TAssistanceResponses, $message));
         broadcast(new NotificationEvent())->toOthers();
@@ -99,12 +99,21 @@ class TAssistanceController extends Controller
 
     public function getTechResponse($id)
     {
-        $query = TAssistanceResponses::where('ta_request_id', $id)->with('t_assistance')->firstOrFail();
+        $query = TAssistanceResponses::where('ta_request_id', $id)->with('t_assistance')->with('performed_by')->firstOrFail();
+
         // Log::channel('activity')->info('User submitted form', [
         //     'user_id' => $query,
 
         // ]);
         return response()->json($query);
+    }
+    public function getSelfRequestCount()
+    {
+        $user_id = auth('api')->user()->id;
+
+        $count = TAssistance::where('request_by', $user_id)->where('status', 0)
+            ->count();
+        return response()->json($count);
     }
     public function getPendingRequests()
     {
@@ -137,12 +146,14 @@ class TAssistanceController extends Controller
 
     public function addRequest(Request $request)
     {
-        $curr_time = now()->format('Y-m-d H:i:s');
+        $curr_time = now()->setTimezone('Asia/Taipei')->format('Y-m-d H:i:s');
         $request->validate([
             'request_type' => 'required',
             'description' => 'required',
         ]);
         if ($request->file) {
+            // $odsu_name = auth('api')->user()->division->name;
+            // $divisionFolder = str_replace(' ', '_', $odsu_name);
             $upload_path = public_path('requests');
             $extension = $request->file->getClientOriginalExtension();
             $file_name = time() . '.' . $extension;
@@ -190,9 +201,9 @@ class TAssistanceController extends Controller
                 'ongoing' => TAssistance::where('status', '3')->count(),
                 'disregard' => TAssistance::where('status', '2')->count(),
             ]);
-        }else{
-           $user_id = auth('api')->user()->id;
-           return response()->json([
+        } else {
+            $user_id = auth('api')->user()->id;
+            return response()->json([
                 'completed' => TAssistance::where('request_by', $user_id)->where('status', '1')->count(),
                 'pending' => TAssistance::where('request_by', $user_id)->where('status', '0')->count(),
                 'ongoing' => TAssistance::where('request_by', $user_id)->where('status', '3')->count(),

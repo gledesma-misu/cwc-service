@@ -7,7 +7,15 @@
                     <h5 class="float-start text-light">Requests List</h5>
 
                     <button class="btn btn-success float-end" @click="submitRequest"
-                        v-if="current_permissions.has('technicalassistance-create')">Request</button>
+                        v-if="current_permissions.has('technicalassistance-create') && !current_roles.has('misu') && current_roles.has('employee')"
+                        :disabled="canRequest">Request</button>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6 float-end" v-if="canRequest">
+                        <i class="text-danger">Request for assistance exceed</i>
+                    </div>
                 </div>
                 <div class="card-body">
                     <!-- <div class="row">
@@ -41,6 +49,12 @@
                                 Accomplished
                             </a>
                         </li>
+                        <!-- <li class="nav-item">
+                            <a href="#" class="nav-link" :class="{ active: currentTab === 'Disregarded' }"
+                                @click.prevent="currentTab = 'Disregarded'">
+                                Disregarded
+                            </a>
+                        </li> -->
                     </ul>
 
                     <div class="table-responsive">
@@ -184,9 +198,6 @@
                                                     @change="getPerformTaskFile($event)">
                                                 <!-- <span> {{ requestData.file ? "Already uploaded a file!" : "No File uploaded yet!" }} </span> -->
                                             </div>
-                                            <span v-if="requestData.file">
-                                                File Name: {{ requestData.file }}
-                                            </span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -258,8 +269,10 @@ export default {
             } else {
                 if (this.currentTab == 'Pending') {
                     this.$store.dispatch("getRequestResultsPending", link);
-                } else {
+                } else if (this.currentTab == 'Accomplished') {
                     this.$store.dispatch("getRequestResultsAccomplished", link);
+                } else if (this.currentTab == 'Disregarded') {
+                    this.$store.dispatch("getRequestResultsDisregarded", link);
                 }
 
             }
@@ -330,16 +343,26 @@ export default {
         window.Echo.channel("tarequest").listen("TAssistanceRequest", (e) => {
             this.$store.dispatch("getAccomplishedRequests");
         });
+        // window.Echo.channel("tarequest").listen("TAssistanceRequest", (e) => {
+        //     this.$store.dispatch("getDisregardedRequests");
+        // });
         this.$store.dispatch('getPendingRequests');
         this.$store.dispatch('getAccomplishedRequests');
+        // this.$store.dispatch('getDisregardedRequests');
         const current_permissions = this.$store.getters.current_permissions;
         // if (current_permissions.has('technicalassistance-misu')) {
         //     this.$store.dispatch('getDivisions');
         // }
+        this.$store.dispatch('getSelfRequestCount');
         this.$store.dispatch('getDivisions');
         this.$store.dispatch('getAuthRolesAndPermissions');
     },
     computed: {
+        canRequest() {
+            return (
+                this.request_count > 3
+            )
+        },
         // getDivisionName() {
         //     return this.$store.getters.getDivisionName;
         // },
@@ -363,6 +386,9 @@ export default {
         },
         current_permissions() {
             return this.$store.getters.current_permissions
+        },
+        request_count() {
+            return this.$store.getters.request_count
         },
         active_tab() {
             return this.currentTab == "Pending"

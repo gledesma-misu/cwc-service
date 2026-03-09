@@ -42,7 +42,7 @@
                     <tr>
                         <th style="width: 40%">File Attachement</th>
                         <td>
-                            <a :href="`${url}public/requests/${requestInfo.file_attachement}`" class="btn btn-success "
+                            <a :href="`${url}requests/${requestInfo.file_attachement}`" class="btn btn-success "
                                 v-if="requestInfo.file_attachement" target="_blank">
                                 <i class="fa fa-download"></i>
                             </a>
@@ -73,59 +73,79 @@
                                 Satisfied</span>
                         </td>
                     </tr>
-                    <tr v-if="current_roles.has('employee') && requestInfo.status == 3 || requestInfo.status == 1">
+                    <tr v-if="requestInfo.status == 3 || requestInfo.status == 1">
                         <th style="width: 40%">Findings</th>
                         <td>{{ tech_responses.findings }}</td>
                     </tr>
-                    <tr v-if="current_roles.has('employee') && requestInfo.status == 3 || requestInfo.status == 1">
+                    <tr v-if="requestInfo.status == 3 || requestInfo.status == 1">
                         <th style="width: 40%">Recommendations</th>
                         <td>{{ tech_responses.recommendations }}</td>
                     </tr>
-                    <tr v-if="current_roles.has('employee') && requestInfo.status == 3 || requestInfo.status == 1">
+                    <tr v-if="requestInfo.status == 3 || requestInfo.status == 1">
                         <th style="width: 40%">Remarks</th>
                         <td>{{ tech_responses.remarks }}</td>
+                    </tr>
+                    <tr v-if="requestInfo.status == 1">
+                        <th style="width: 40%">Performed By</th>
+                        <td>{{ tech_responses?.performed_by?.fname }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div v-if="current_roles.has('employee') && requestInfo.status == 3">
-            <div class="row">
-                <label for="findings">Performance Survey</label>
-                <div class="row">
-                    <div class="col-md-12">
+            <div class="container">
+                <h3>Performance Survey</h3>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
                         <div class="form-group">
-                            <div class="form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" id="inlineradio5" name="very_satisfied"
                                     v-model="requestRate.performance_survey" value="5" />
                                 <label for="inlineradio5" class="form-check-label">Very Satisfied</label>
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" id="inlineradio4" name="satisfied"
                                     v-model="requestRate.performance_survey" value="4" />
                                 <label for="inlineradio4" class="form-check-label">Satisfied</label>
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" id="inlineradio3" name="neutral"
                                     v-model="requestRate.performance_survey" value="3" />
                                 <label for="inlineradio3" class="form-check-label">Neutral</label>
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" id="inlineradio2" name="dissatisfied"
                                     v-model="requestRate.performance_survey" value="2" />
                                 <label for="inlineradio2" class="form-check-label">Dissatisfied</label>
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" class="form-check-input" id="inlineradio1" name="very_dissatisfied"
                                     v-model="requestRate.performance_survey" value="1" />
                                 <label for="inlineradio1" class="form-check-label">Very Dissatisfied</label>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <i>Kindly fill-out the Client Satisfaction Measurement Form (CSM) before marking it complete.
+                            Thank
+                            you! </i>
 
+                        <a href='https://docs.google.com/forms/d/e/1FAIpQLScaKX9uDDqIPUAgVWGNLFcCFY9JlpPt7qI4RSbAk0M5ehohdg/viewform'
+                            target="_blank" rel="noopener" class="btn btn-info"
+                            v-if="requestInfo.status == 3 && current_roles.has('employee')">
+                            CSM Link
+                        </a>
                     </div>
                 </div>
             </div>
+
+
+
         </div>
-        <div v-if="current_permissions.has('technicalassistance-misu') && requestInfo.status != 3">
+
+        <div v-if="current_roles.has('misu') && (requestInfo.status !== 3 && requestInfo.status !== 1)">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -162,7 +182,7 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-success" @click="takeAction(requestInfo)" data-bs-dismiss="modal"
-            v-if="current_permissions.has('technicalassistance-misu') && requestInfo.status != 3"
+            v-if="current_roles.has('misu') && (requestInfo.status !== 3 && requestInfo.status !== 1)"
             :disabled="!canSubmit">
             Take Action</button>
         <button type="button"
@@ -189,6 +209,9 @@ export default {
             requestRate: new Form({
                 ta_request_id: '',
                 performance_survey: '',
+                name: '',
+                email: '',
+                message: '',
             }),
         };
 
@@ -200,8 +223,20 @@ export default {
         },
         completeRequest(requestInfo) {
             this.requestRate.ta_request_id = requestInfo.id;
+            if (this.requestRate.performance_survey == '') {
+                window.Swal.fire({
+                    icon: "error",
+                    title: "Please Select Performance Survey",
+                });
+            }
             this.$store.dispatch('completeRequest', this.requestRate)
-        }
+        },
+        // getDivisionName(divisionId) {
+        //     const division = this.divisions.data.find(div => div.id == divisionId);
+        //     // console.log(this.divisions);
+        //     return division ? division.name : 'Unknown';
+        // }
+
     },
     mounted() {
         this.url = window.url;
@@ -213,7 +248,7 @@ export default {
             return (
                 this.requestAction.findings.trim() !== '' &&
                 this.requestAction.recommendations.trim() !== '' &&
-                this.requestAction.remarks.trim() !== '' 
+                this.requestAction.remarks.trim() !== ''
             )
         },
         accomplished_requests() {
@@ -228,6 +263,9 @@ export default {
         tech_responses() {
             return this.$store.getters.tech_responses
         },
+        // divisions() {
+        //     return this.$store.getters.divisions;
+        // },
     }
 };
 </script>

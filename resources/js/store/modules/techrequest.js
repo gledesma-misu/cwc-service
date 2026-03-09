@@ -3,8 +3,9 @@ import { Modal } from "bootstrap";
 export default {
     state: {
         exampleModal: null,
-        tech_responses: [],
+        tech_responses: {},
         ta_count: 0,
+        request_count: 0,
         pending_requests: [],
         pending_requests_links: [],
         accomplished_requests: [],
@@ -16,6 +17,9 @@ export default {
         },
         ta_count(state) {
             return state.ta_count;
+        },
+        request_count(state) {
+            return state.request_count;
         },
         pending_requests(state) {
             return state.pending_requests;
@@ -33,10 +37,13 @@ export default {
     mutations: {
         set_tech_responses: (state, data) => {
             state.tech_responses = data;
-            // console.log(state.tech_responses);
+            // console.log("state.tech_responses");
         },
         set_ta_count: (state, data) => {
             state.ta_count = data;
+        },
+        set_request_count: (state, data) => {
+            state.request_count = data;
         },
         set_accomplished_requests: (state, data) => {
             state.accomplished_requests = data;
@@ -95,6 +102,13 @@ export default {
                 .get(`${window.url}api/getTechResponse/${id}`)
                 .then((response) => {
                     context.commit("set_tech_responses", response.data);
+                });
+        },
+        getSelfRequestCount: (context) => {
+            axios
+                .get(`${window.url}api/getSelfRequestCount`)
+                .then((response) => {
+                    context.commit("set_request_count", response.data);
                 });
         },
         getAccomplishedRequests: (context) => {

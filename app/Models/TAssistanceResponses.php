@@ -21,4 +21,9 @@ class TAssistanceResponses extends Model
     {
         return $this->belongsTo(TAssistance::class, 'ta_request_id');
     }
+
+    public function performed_by()
+    {
+        return $this->belongsTo('App\Models\User', 'performed_by');
+    }
 }

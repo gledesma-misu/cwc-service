@@ -50,6 +50,7 @@ Route::middleware(['forcetojson', 'auth:api'])->group(function () {
         Route::post('completeRequest', 'completeRequest')->middleware('permission:technicalassistance-update');
         Route::post('disregardTask/{id}', 'disregardTask')->middleware('permission:technicalassistance-delete');
         Route::get('countTAPending', 'countTAPending')->middleware('permission:technicalassistance-read');
+        Route::get('getSelfRequestCount', 'getSelfRequestCount')->middleware('permission:technicalassistance-read');
         Route::get('getPendingRequests', 'getPendingRequests')->middleware('permission:technicalassistance-read');
         Route::get('getAccomplishedRequests', 'getAccomplishedRequests')->middleware('permission:technicalassistance-read');
         Route::get('getTechResponse/{id}', 'getTechResponse')->middleware('permission:technicalassistance-read');

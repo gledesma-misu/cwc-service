@@ -23,7 +23,7 @@ class AuthController extends Controller
             $user = User::where('username', $request->username)->first();
 
             //execute php artisan passport:client --personal
-            shell_exec('php ../artisan passport:install'); //execute on new login
+            // shell_exec('php ../artisan passport:install'); //execute on new login
 
             $successToken = $user->createToken('mis_token')->accessToken;
             session()->put('token', $successToken);
