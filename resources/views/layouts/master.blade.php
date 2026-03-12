@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-   
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('sidebar/css/style.css') }}">
 
@@ -25,7 +25,7 @@
                     <img class="img logo mb-5" src="{{ asset('images/login_logo.png') }}" alt="Logo">
                 </a>
                 <ul class="list-unstyled components mb-5">
-                    <li class="{{ Request::is('dashboard', '/index') }}">
+                    <li class="{{ Request::is('dashboard', '/index') ? 'active' : '' }}">
                         <a href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
                     @can('employee')
@@ -48,8 +48,8 @@
                                 {{-- <li class="{{ Request::is('techassistance/list') ? 'active' : '' }}">
                                 <a href="{{ route('techAssistanceList') }}">Request List</a>
                             </li> --}}
-                                <li class="{{ Request::is('techassistance/report') ? 'active' : '' }}">
-                                    <a href="{{ route('techAssistanceReport') }}">Report</a>
+                                <li class="{{ Request::is('techassistance/reports') ? 'active' : '' }}">
+                                    <a href="{{ route('techAssistanceReports') }}">Report</a>
                                 </li>
                             </ul>
                         </li>
@@ -91,12 +91,16 @@
                                         <a href="{{ route('permissionsIndex') }}">Permissions</a>
                                     </li>
                                 @endcan
-                                <li>
+                                <li >
                                     <a href="#">Technical Assistance (Remarks)</a>
                                 </li>
                             </ul>
                         </li>
                     @endcan
+
+                    <li class="{{ Request::is('faqs', '/index')? 'active' : ''  }}">
+                        <a href="{{ route('faqs') }}">Frequently Asked Questions</a>
+                    </li>
 
 
                 </ul>
@@ -202,7 +206,7 @@
 
     {{-- <script src="{{ asset('/js/app.js') }}"></script> --}}
     {{-- <script src="{{ asset('/sidebar/js/main.js') }}"></script> --}}
-  
+
 </body>
 
 </html>

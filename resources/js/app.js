@@ -10,6 +10,7 @@ import { store } from "./store/store";
 // import Aura from "@primeuix/themes/aura";
 
 import DashboardComponent from "./components/DashboardComponent.vue";
+import FaqsComponent from "./components/FaqsComponent.vue";
 
 
 import LogoutComponent from "./components/auth/LogoutComponent.vue";
@@ -17,6 +18,7 @@ import NotificationsComponent from "./components/NotificationsComponent.vue";
 import Divisions from "./components/Divisions.vue";
 import Staffs from "./components/staffs/Staffs.vue";
 import TechAssistance from "./components/techassistance/TechAssistance.vue";
+import Reports from "./components/techassistance/Reports.vue";
 import PermissionsCreate from "./components/permissions/PermissionsCreate.vue";
 import Form from "vform";
 window.Form = Form;
@@ -46,10 +48,12 @@ const app = createApp({});
 
 app.component("logout-component", LogoutComponent);
 app.component("dashboard-component", DashboardComponent);
+app.component("faqs-component", FaqsComponent);
 app.component("notifications-component", NotificationsComponent);
 app.component("divisions", Divisions);
 app.component("staffs", Staffs);
 app.component("techassistance", TechAssistance);
+app.component("reports", Reports);
 app.component("multi-select", Multiselect);
 app.component("permissions-create", PermissionsCreate);
 

@@ -11,7 +11,8 @@ use App\Models\User;
 use App\Models\Division;
 use Auth;
 use Illuminate\Support\Facades\Log;
-use Session;
+use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 
 use App\Notifications\NewNotification;
 
@@ -109,6 +110,8 @@ class TAssistanceController extends Controller
     }
     public function getSelfRequestCount()
     {
+        // $this->expireOldPendingRequests();
+
         $user_id = auth('api')->user()->id;
 
         $count = TAssistance::where('request_by', $user_id)->where('status', 0)
@@ -120,6 +123,7 @@ class TAssistanceController extends Controller
         $user_id = auth('api')->user()->id;
         $user = auth('api')->user();
         $roleNames = $user->roles->pluck('name')->toArray();
+        // $this->expireOldPendingRequests();
         // Log::channel('activity')->info('User submitted form', [
         //     'user_id' => $roleNames,
 
@@ -191,6 +195,7 @@ class TAssistanceController extends Controller
 
     public function countTAPending()
     {
+        // $this->expireOldPendingRequests();
 
         $userDiv = auth('api')->user()->division_id;
 
@@ -211,4 +216,23 @@ class TAssistanceController extends Controller
             ]);
         }
     }
+
+    public function reports()
+    {
+       
+        return view('techassistance.reports');
+    }
+
+    /**
+     * Automatically expire pending technical assistance requests that have not been acted on
+     * within 3 days. Any request still in status 0 will be marked as status 10.
+     */
+    // private function expireOldPendingRequests(): void
+    // {
+    //     $threeDaysAgo = Carbon::now()->subDays(3);
+
+    //     TAssistance::where('status', 0)
+    //         ->where('request_date', '<', $threeDaysAgo)
+    //         ->update(['status' => 10]);
+    // }
 }

@@ -24,6 +24,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/faqs', [HomeController::class, 'faqs'])->name('faqs');
 
     Route::controller(DivisionController::class)->group(function () {
         Route::get('divisions/index', 'index')->name('divisionsIndex')->middleware('permission:divisions-read');
@@ -63,6 +64,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(TAssistanceController::class)->group(function () {
         Route::get('techassistance/index', 'index')->name('techAssistanceIndex')->middleware('permission:technicalassistance-read');
-        Route::get('techassistance/report', 'index')->name('techAssistanceReport')->middleware('permission:technicalassistance-read');
+        Route::get('techassistance/reports', 'reports')->name('techAssistanceReports')->middleware('permission:reports-read');
     });
 });

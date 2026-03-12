@@ -25,8 +25,9 @@ Route::middleware(['forcetojson', 'auth:api'])->group(function () {
     });
 
     Route::controller(ApiController::class)->group(function () {
-        Route::get('getBarChartData/{year}', 'getBarChartData');
-        Route::get('getChartData/{year}', 'getChartData');
+        Route::get('getLineChartData/{year}', 'getLineChartData');
+        Route::get('getRequestType', 'getRequestType');
+        Route::get('getTicketStatus', 'getTicketStatus');
         Route::get('getUnreadNotifications', 'getUnreadNotifications');
         Route::get('getAllNotifications', 'getAllNotifications');
         Route::get('markNotificationAsRead', 'markNotificationAsRead');

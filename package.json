@@ -44,7 +44,8 @@
         "pusher-js": "^8.4.0",
         "sweetalert2": "^11.22.2",
         "vform": "^2.1.2",
-        "vuex": "^4.0.2"
+        "vuex": "^4.0.2",
+        "xlsx": "^0.18.5"
     },
     "type": "module"
 }
