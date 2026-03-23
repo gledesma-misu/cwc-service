@@ -148,4 +148,23 @@ class ApiController extends Controller
             'numeric_request_type' => $numeric_request_type
         ]);
     }
+
+    public function exportExcel(Request $request)
+    {
+        $request->validate([
+            'type' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required'
+        ]);
+
+        $type = $request->type;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        if($type == 'completed'){
+            $ta = TAssistance::where('status', '1')->whereBetween('created_at', [$start_date, $end_date])->with('request_by')->get();
+        }
+
+        return response()->json($ta);
     }
+}
